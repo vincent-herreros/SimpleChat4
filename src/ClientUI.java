@@ -20,10 +20,10 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	private JPanel listeCoPanel = new JPanel();
 	private JPanel chatPanel = new JPanel();
 	private JPanel messagePanel = new JPanel();
-	private JLabel titreListeCoLabel = new JLabel("liste connectés");
+	private JLabel titreListeCoLabel = new JLabel("Who's connected");
 	private JLabel messageLabel = new JLabel("Chat");
 	private JTextField champsTextChat = new JTextField();
-	private JButton ValidMessageBouton = new JButton("Valider");
+	private JButton ValidMessageBouton = new JButton("Send");
 	private JComboBox choixCommande = new JComboBox();
 	
 	
@@ -106,6 +106,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	
 	public static void main(String[] args)
 	{
+		ClientUI clientWindow = new ClientUI("Anonymous","localhost", ""+DEFAULT_PORT);
 		ClientWindow loginWindow = new ClientWindow();
 	}
 }

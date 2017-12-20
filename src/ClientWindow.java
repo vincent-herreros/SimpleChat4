@@ -20,9 +20,9 @@ public class ClientWindow extends JFrame implements ActionListener{
 	private JTextField texteLogin = new JTextField();
 	private JTextField texteHote = new JTextField("localhost");
 	private JTextField textePort = new JTextField("5555");
-	private JLabel labelLogin = new JLabel("Entrez votre login");
-	private JLabel labelHote = new JLabel("Nom de l'hôte");
-	private JLabel labelPort = new JLabel("Numéro du port");
+	private JLabel labelLogin = new JLabel("Log In");
+	private JLabel labelHote = new JLabel("Host Name");
+	private JLabel labelPort = new JLabel(">Port Number");
 	private String login;
 	private String hote;
 
