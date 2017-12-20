@@ -6,11 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import client.*;
 import common.*;
 
-public class ClientUI extends JFrame implements ChatIF, ActionListener{
+public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListener{
 	
 	final public static int DEFAULT_PORT = 5555;
 	
@@ -56,7 +58,11 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		
 		ValidMessageBouton.addActionListener(this);
 		
-		champsTextChat.setPreferredSize(new Dimension(400, 20));
+		quitterBouton.addActionListener(this);
+		
+		champsTextChat.addKeyListener(this);
+		
+		champsTextChat.setPreferredSize(new Dimension(300, 20));
 		
 		ensembleMessage = new JScrollPane(conversation);
 		
@@ -67,10 +73,10 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		chatPanel.add(choixCommande);
 		chatPanel.add(champsTextChat);
 		chatPanel.add(ValidMessageBouton);
+		chatPanel.add(quitterBouton);
 		
 		choixCommande.addItem("gethost");
 		choixCommande.addItem("getport");
-		choixCommande.addItem("quit");
 		choixCommande.addItem("logoff");
 		choixCommande.addItem("login");
 		choixCommande.addActionListener(this);
@@ -80,7 +86,6 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		conteneur.add(chatPanel, BorderLayout.SOUTH);
 		
 		setContentPane(conteneur);
-
 		setVisible(true);
 
 	}
@@ -91,15 +96,15 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 			client.handleMessageFromClientUI(champsTextChat.getText());
 			champsTextChat.setText("");
 		}
-		if(e.getSource()==choixCommande) {
+		else if(e.getSource()==quitterBouton) {
+			client.handleMessageFromClientUI("#quit");
+		}
+		else if(e.getSource()==choixCommande) {
 			if(choixCommande.getSelectedItem()=="getport") {
 				client.handleMessageFromClientUI("#getport");
 			}
 			else if(choixCommande.getSelectedItem()=="gethost") {
 				client.handleMessageFromClientUI("#gethost");
-			}
-			else if(choixCommande.getSelectedItem()=="quit") {
-				client.handleMessageFromClientUI("#quit");
 			}
 			else if(choixCommande.getSelectedItem()=="logoff") {
 				client.handleMessageFromClientUI("#logoff");
@@ -121,4 +126,29 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	{
 		ClientUI clientWindow = new ClientUI("Anonymous","localhost", ""+DEFAULT_PORT);
 	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		if(arg0.getKeyCode()==KeyEvent.VK_ENTER) {
+			client.handleMessageFromClientUI(champsTextChat.getText());
+			champsTextChat.setText("");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void addNotify() {
+        super.addNotify();
+        requestFocus();
+    }
 }
