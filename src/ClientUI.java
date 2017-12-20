@@ -34,6 +34,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 			System.out.println(port2);
 			client= new ChatClient(host, port2, this);
 			this.login=login1;
+			client.handleMessageFromClientUI("#login "+login);
 		} 
 		catch(IOException exception) 
 		{
@@ -54,11 +55,14 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		messagePanel.add(messageLabel);
 		Border blackline = BorderFactory.createLineBorder(Color.black);
 		messagePanel.setBorder(blackline);
+		listeCoPanel.setLayout(new BoxLayout(listeCoPanel, BoxLayout.PAGE_AXIS));
 		chatPanel.add(choixCommande);
 		chatPanel.add(champsTextChat);
 		chatPanel.add(ValidMessageBouton);
 		ValidMessageBouton.addActionListener(this);
 		listeCoPanel.add(titreListeCoLabel);
+		JLabel user = new JLabel("-"+login);
+		listeCoPanel.add(user);
 		choixCommande.addItem("sethost");
 		choixCommande.addItem("quit");
 		choixCommande.addItem("logoff");
@@ -74,27 +78,10 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 
 	}
 
-	private void accept() {
-		try
-		{
-			String message = champsTextChat.getText();
-
-			while (true) 
-			{
-				client.handleMessageFromClientUI(message);
-			}
-		} 
-		catch (Exception ex) 
-		{
-			System.out.println
-			("Unexpected error while reading from console!");
-		}
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==ValidMessageBouton) {
-			accept();
+			client.handleMessageFromClientUI(champsTextChat.getText());
 		}
 	}
 

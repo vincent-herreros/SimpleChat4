@@ -40,12 +40,7 @@ public class ClientWindow extends JFrame implements ActionListener{
 		panelBouton.setLayout(new BoxLayout(panelBouton, BoxLayout.LINE_AXIS));
 		panelPort.setLayout(new BoxLayout(panelPort, BoxLayout.LINE_AXIS));
 		boutonValid.addActionListener(this);
-		boutonQuit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
+		boutonQuit.addActionListener(this);
 		panelLogin.add(labelLogin);
 		panelLogin.add(texteLogin);
 		panelHote.add(labelHote);
