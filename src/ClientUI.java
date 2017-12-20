@@ -21,7 +21,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	private JPanel chatPanel = new JPanel();
 	private JPanel messagePanel = new JPanel();
 	private JLabel titreListeCoLabel = new JLabel("liste connectés");
-	private JLabel messageLabel = new JLabel("hey");
+	private JLabel messageLabel = new JLabel("Chat");
 	private JTextField champsTextChat = new JTextField();
 	private JButton ValidMessageBouton = new JButton("Valider");
 	private JComboBox choixCommande = new JComboBox();
@@ -54,6 +54,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		messagePanel.add(messageLabel);
 		Border blackline = BorderFactory.createLineBorder(Color.black);
 		messagePanel.setBorder(blackline);
+		chatPanel.add(choixCommande);
 		chatPanel.add(champsTextChat);
 		chatPanel.add(ValidMessageBouton);
 		ValidMessageBouton.addActionListener(this);
@@ -65,10 +66,9 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		choixCommande.addItem("setport");
 		choixCommande.addItem("login");
 		choixCommande.addItem("setport");
-		listeCoPanel.add(choixCommande);
 		conteneur.add(listeCoPanel,BorderLayout.WEST);
-		conteneur.add(messagePanel, BorderLayout.NORTH);
-		conteneur.add(chatPanel, BorderLayout.CENTER);
+		conteneur.add(messagePanel, BorderLayout.CENTER);
+		conteneur.add(chatPanel, BorderLayout.SOUTH);
 		pack();
 		setVisible(true);
 
