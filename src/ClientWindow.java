@@ -1,4 +1,8 @@
+
 import javax.swing.*;
+
+import common.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +12,10 @@ import java.text.NumberFormat;
 import client.*;
 import common.*;
 
+
 public class ClientWindow extends JFrame implements ActionListener{
+	
+	ClientUI master;
 	
 	private JButton boutonValid = new JButton("Valider");
 	private JButton boutonQuit = new JButton("Quit");
@@ -17,7 +24,7 @@ public class ClientWindow extends JFrame implements ActionListener{
 	private JPanel panelHote = new JPanel();
 	private JPanel panelPort = new JPanel();
 	private JPanel panelBouton = new JPanel();
-	private JTextField texteLogin = new JTextField();
+	private JTextField texteLogin = new JTextField("Anonymous");
 	private JTextField texteHote = new JTextField("localhost");
 	private JTextField textePort = new JTextField("5555");
 	private JLabel labelLogin = new JLabel("Log In");
@@ -26,8 +33,8 @@ public class ClientWindow extends JFrame implements ActionListener{
 	private String login;
 	private String hote;
 
-	public ClientWindow() {
-		JFrame fenetre = new JFrame();
+	public ClientWindow(ClientUI f) {
+		master=f;
 		setTitle("Login");
 		setSize(300,300);
 		setResizable(false);
@@ -63,9 +70,11 @@ public class ClientWindow extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==boutonValid) {
-			login = texteLogin.getText();
-			hote = texteHote.getText();
-			ClientUI chat = new ClientUI(texteLogin.getText(), texteHote.getText(), textePort.getText());
+			master.client.handleMessageFromClientUI("#setport "+textePort.getText());
+			master.client.handleMessageFromClientUI("#sethost "+texteHote.getText());
+			master.setVisible(true);
+			setVisible(false);
+			master.client.handleMessageFromClientUI("#login "+texteLogin.getText());
 		}
 		this.setVisible(false);
 	}

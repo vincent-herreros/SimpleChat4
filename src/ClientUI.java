@@ -21,22 +21,19 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	private JPanel conteneur = new JPanel();
 	private JPanel listeCoPanel = new JPanel();
 	private JPanel chatPanel = new JPanel();
-	private JPanel messagePanel = new JPanel();
 	private JLabel titreListeCoLabel = new JLabel("Who's connected");
-	private JLabel messageLabel = new JLabel("Chat");
 	private JTextPane conversation = new JTextPane();
 	private JScrollPane ensembleMessage ;
 	private JTextField champsTextChat = new JTextField();
 	private JButton ValidMessageBouton = new JButton("Send");
+	private JButton quitterBouton = new JButton("Quitter");
 	private JComboBox<String> choixCommande = new JComboBox<String>();
 	
 	
 	public ClientUI(String login1, String host, String port) {
 		try 
 		{
-			int port2=Integer.parseInt(port);
-			System.out.println(port2);
-			client= new ChatClient(host, port2, this);
+			client= new ChatClient(host, Integer.parseInt(port), this);
 			this.login=login1;
 			client.handleMessageFromClientUI("#login "+login);
 		} 
@@ -63,12 +60,6 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		
 		ensembleMessage = new JScrollPane(conversation);
 		
-		/*messagePanel.setPreferredSize(new Dimension(400,500));
-		messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.PAGE_AXIS));
-		Border blackline = BorderFactory.createLineBorder(Color.black);
-		messagePanel.setBorder(blackline);
-		messagePanel.add(ensembleMessage);*/
-		
 		listeCoPanel.setLayout(new BoxLayout(listeCoPanel, BoxLayout.PAGE_AXIS));
 		listeCoPanel.add(titreListeCoLabel);
 		listeCoPanel.add(user);
@@ -81,8 +72,6 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		choixCommande.addItem("getport");
 		choixCommande.addItem("quit");
 		choixCommande.addItem("logoff");
-		choixCommande.addItem("sethost");
-		choixCommande.addItem("setport");
 		choixCommande.addItem("login");
 		choixCommande.addActionListener(this);
 		
@@ -93,7 +82,6 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 		setContentPane(conteneur);
 
 		setVisible(true);
-		conversation.setText("hello");
 
 	}
 
@@ -101,10 +89,24 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==ValidMessageBouton) {
 			client.handleMessageFromClientUI(champsTextChat.getText());
+			champsTextChat.setText("");
 		}
 		if(e.getSource()==choixCommande) {
 			if(choixCommande.getSelectedItem()=="getport") {
 				client.handleMessageFromClientUI("#getport");
+			}
+			else if(choixCommande.getSelectedItem()=="gethost") {
+				client.handleMessageFromClientUI("#gethost");
+			}
+			else if(choixCommande.getSelectedItem()=="quit") {
+				client.handleMessageFromClientUI("#quit");
+			}
+			else if(choixCommande.getSelectedItem()=="logoff") {
+				client.handleMessageFromClientUI("#logoff");
+			}
+			else if(choixCommande.getSelectedItem()=="login") {
+				new ClientWindow(this);
+				setVisible(false);
 			}
 		}
 	}
@@ -112,8 +114,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener{
 	@Override
 	public void display(String message) {
 		String t=""+conversation.getText();
-		System.out.println(t);
-		conversation.setText("yeye");
+		conversation.setText(t+"\n"+message);
 	}
 	
 	public static void main(String[] args)
