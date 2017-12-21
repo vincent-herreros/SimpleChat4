@@ -47,9 +47,7 @@ public class ClientWindow extends JFrame implements ActionListener{
 		panelBouton.setLayout(new BoxLayout(panelBouton, BoxLayout.LINE_AXIS));
 		panelPort.setLayout(new BoxLayout(panelPort, BoxLayout.LINE_AXIS));
 		boutonValid.addActionListener(this);
-<<<<<<< Updated upstream
 		boutonQuit.addActionListener(this);
-=======
 		boutonQuit.addActionListener(new ActionListener() {
 			
 			
@@ -58,7 +56,6 @@ public class ClientWindow extends JFrame implements ActionListener{
 				System.exit(0);
 			}
 		});
->>>>>>> Stashed changes
 		panelLogin.add(labelLogin);
 		panelLogin.add(texteLogin);
 		panelHote.add(labelHote);
@@ -81,7 +78,6 @@ public class ClientWindow extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==boutonValid) {
-<<<<<<< Updated upstream
 			master.client.handleMessageFromClientUI("#setport "+textePort.getText());
 			master.client.handleMessageFromClientUI("#sethost "+texteHote.getText());
 			master.login=texteLogin.getText();
@@ -89,10 +85,8 @@ public class ClientWindow extends JFrame implements ActionListener{
 			master.setVisible(true);
 			setVisible(false);
 			master.client.handleMessageFromClientUI("#login "+texteLogin.getText());
-=======
 			login = texteLogin.getText();
 			hote = texteHote.getText();
->>>>>>> Stashed changes
 		}
 		this.setVisible(false);
 	}
