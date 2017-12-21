@@ -78,9 +78,14 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		choixCommande.addItem("gethost");
 		choixCommande.addItem("getport");
 		choixCommande.addItem("logoff");
+<<<<<<< Updated upstream
 		choixCommande.addItem("login");
 		choixCommande.addActionListener(this);
 		
+=======
+		choixCommande.addItem("setport");
+		choixCommande.addItem("login");
+>>>>>>> Stashed changes
 		conteneur.add(listeCoPanel,BorderLayout.WEST);
 		conteneur.add(ensembleMessage, BorderLayout.CENTER);
 		conteneur.add(chatPanel, BorderLayout.SOUTH);
@@ -125,6 +130,11 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	public static void main(String[] args)
 	{
 		ClientUI clientWindow = new ClientUI("Anonymous","localhost", ""+DEFAULT_PORT);
+<<<<<<< Updated upstream
+=======
+		//clientWindow.client.handleMessageFromClientUI("#login matthieu");
+		//ClientWindow loginWindow = new ClientWindow();
+>>>>>>> Stashed changes
 	}
 
 	@Override
