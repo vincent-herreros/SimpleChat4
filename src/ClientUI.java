@@ -28,7 +28,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	private JPanel conteneur = new JPanel();
 	private JPanel listeCoPanel = new JPanel();
 	private JPanel chatPanel = new JPanel();
-	private JLabel titreListeCoLabel = new JLabel("Who's connected");
+	private JLabel titreListeCoLabel = new JLabel("My Name :");
 	private JTextPane conversation = new JTextPane();
 	private JScrollPane ensembleMessage ;
 	private JTextField champsTextChat = new JTextField();
@@ -59,11 +59,13 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		
 		conteneur.setLayout(new BorderLayout());
 		
-		usr = new JLabel("-"+login);
+		usr = new JLabel(login);
 		
 		ValidMessageBouton.addActionListener(this);
+		ValidMessageBouton.setBackground(Color.GREEN);
 		
 		quitterBouton.addActionListener(this);
+		quitterBouton.setBackground(Color.RED);
 		
 		champsTextChat.addKeyListener(this);
 		
@@ -118,6 +120,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 				client.handleMessageFromClientUI("#logoff");
 			}
 			else if(choixCommande.getSelectedItem()=="login") {
+				client.handleMessageFromClientUI("#logoff");
 				new ClientWindow(this);
 				setVisible(false);
 			}

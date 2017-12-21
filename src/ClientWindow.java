@@ -40,14 +40,19 @@ public class ClientWindow extends JFrame implements ActionListener{
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+		
 		texteLogin.setPreferredSize(new Dimension(200, 20));
 		texteHote.setPreferredSize(new Dimension(200, 20));
+		
 		panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.LINE_AXIS));
 		panelHote.setLayout(new BoxLayout(panelHote, BoxLayout.LINE_AXIS));
 		panelBouton.setLayout(new BoxLayout(panelBouton, BoxLayout.LINE_AXIS));
 		panelPort.setLayout(new BoxLayout(panelPort, BoxLayout.LINE_AXIS));
+		
 		boutonValid.addActionListener(this);
+		boutonValid.setBackground(Color.GREEN);
 		boutonQuit.addActionListener(this);
+		boutonQuit.setBackground(Color.RED);
 		boutonQuit.addActionListener(new ActionListener() {
 			
 			
@@ -62,8 +67,10 @@ public class ClientWindow extends JFrame implements ActionListener{
 		panelHote.add(texteHote);
 		panelPort.add(labelPort);
 		panelPort.add(textePort);
+		
 		panelBouton.add(boutonValid);
 		panelBouton.add(boutonQuit);
+		
 		conteneur.setLayout(new BoxLayout(conteneur, BoxLayout.PAGE_AXIS));
 		conteneur.add(panelLogin);
 		conteneur.add(panelHote);
@@ -81,7 +88,7 @@ public class ClientWindow extends JFrame implements ActionListener{
 			master.client.handleMessageFromClientUI("#setport "+textePort.getText());
 			master.client.handleMessageFromClientUI("#sethost "+texteHote.getText());
 			master.login=texteLogin.getText();
-			master.usr.setText("-"+master.login);
+			master.usr.setText(master.login);
 			master.setVisible(true);
 			setVisible(false);
 			master.client.handleMessageFromClientUI("#login "+texteLogin.getText());
