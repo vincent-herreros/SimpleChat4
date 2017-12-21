@@ -29,7 +29,7 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	private JPanel conteneur = new JPanel();
 	private JPanel listeCoPanel = new JPanel();
 	private JPanel chatPanel = new JPanel();
-	private JLabel titreListeCoLabel = new JLabel("Who's connected");
+	private JLabel titreListeCoLabel = new JLabel("My Name :");
 	private JTextPane conversation = new JTextPane();
 	private JScrollPane ensembleMessage ;
 	private JTextField champsTextChat = new JTextField();
@@ -58,7 +58,7 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		
 		conteneur.setLayout(new BorderLayout());
 		
-		usr = new JLabel("-"+login);
+		usr = new JLabel(login);
 		
 		ValidMessageBouton.addActionListener(this);
 		
@@ -80,18 +80,20 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		chatPanel.add(ValidMessageBouton);
 		chatPanel.add(quitterBouton);
 		
-		choixCommande.addItem("gethost");
+		choixCommande.addItem("quit");
+		choixCommande.addItem("stop");
+		choixCommande.addItem("close");
+		choixCommande.addItem("setport");
+		choixCommande.addItem("start");
 		choixCommande.addItem("getport");
-		choixCommande.addItem("logoff");
-		choixCommande.addItem("login");
+
+
 		choixCommande.addActionListener(this);
 		conteneur.add(listeCoPanel,BorderLayout.WEST);
 		conteneur.add(ensembleMessage, BorderLayout.CENTER);
 		conteneur.add(chatPanel, BorderLayout.SOUTH);
 		
 		setContentPane(conteneur);
-		
-		server.handleMessageFromServerUI("#login "+login);
 
 		setVisible(true);
 
@@ -101,6 +103,7 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==ValidMessageBouton) {
 			server.handleMessageFromServerUI(champsTextChat.getText());
+			display("> "+champsTextChat.getText());
 			champsTextChat.setText("");
 		}
 		else if(e.getSource()==quitterBouton) {
@@ -110,15 +113,21 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 			if(choixCommande.getSelectedItem()=="getport") {
 				server.handleMessageFromServerUI("#getport");
 			}
-			else if(choixCommande.getSelectedItem()=="gethost") {
-				server.handleMessageFromServerUI("#gethost");
-			}
-			else if(choixCommande.getSelectedItem()=="logoff") {
-				server.handleMessageFromServerUI("#logoff");
-			}
-			else if(choixCommande.getSelectedItem()=="login") {
-				//new ClientWindow(this);
+			else if(choixCommande.getSelectedItem()=="setport") {
+				new ServerWindow(this);
 				setVisible(false);
+			}
+			else if(choixCommande.getSelectedItem()=="stop") {
+				server.handleMessageFromServerUI("#stop");
+			}
+			else if(choixCommande.getSelectedItem()=="close") {
+				server.handleMessageFromServerUI("#close");
+			}
+			else if(choixCommande.getSelectedItem()=="start") {
+				server.handleMessageFromServerUI("#start");
+			}
+			else if(choixCommande.getSelectedItem()=="quit") {
+				server.handleMessageFromServerUI("#quit");
 			}
 		}
 	}
@@ -152,6 +161,7 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	public void keyPressed(KeyEvent arg0) {
 		if(arg0.getKeyCode()==KeyEvent.VK_ENTER) {
 			server.handleMessageFromServerUI(champsTextChat.getText());
+			display("[server] "+champsTextChat.getText());
 			champsTextChat.setText("");
 		}
 	}
