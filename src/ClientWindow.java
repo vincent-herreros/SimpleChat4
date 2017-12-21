@@ -84,6 +84,8 @@ public class ClientWindow extends JFrame implements ActionListener{
 <<<<<<< Updated upstream
 			master.client.handleMessageFromClientUI("#setport "+textePort.getText());
 			master.client.handleMessageFromClientUI("#sethost "+texteHote.getText());
+			master.login=texteLogin.getText();
+			master.usr.setText("-"+master.login);
 			master.setVisible(true);
 			setVisible(false);
 			master.client.handleMessageFromClientUI("#login "+texteLogin.getText());

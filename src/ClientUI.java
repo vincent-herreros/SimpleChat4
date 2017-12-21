@@ -9,6 +9,9 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import client.*;
 import common.*;
 
@@ -20,6 +23,8 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	
 	String login;
 	
+	JLabel usr ;
+	
 	private JPanel conteneur = new JPanel();
 	private JPanel listeCoPanel = new JPanel();
 	private JPanel chatPanel = new JPanel();
@@ -30,6 +35,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	private JButton ValidMessageBouton = new JButton("Send");
 	private JButton quitterBouton = new JButton("Quitter");
 	private JComboBox<String> choixCommande = new JComboBox<String>();
+	private JScrollBar scroll;
 	
 	
 	public ClientUI(String login1, String host, String port) {
@@ -37,7 +43,6 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		{
 			client= new ChatClient(host, Integer.parseInt(port), this);
 			this.login=login1;
-			client.handleMessageFromClientUI("#login "+login);
 		} 
 		catch(IOException exception) 
 		{
@@ -54,7 +59,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		
 		conteneur.setLayout(new BorderLayout());
 		
-		JLabel user = new JLabel("-"+login);
+		usr = new JLabel("-"+login);
 		
 		ValidMessageBouton.addActionListener(this);
 		
@@ -65,10 +70,11 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		champsTextChat.setPreferredSize(new Dimension(300, 20));
 		
 		ensembleMessage = new JScrollPane(conversation);
+		scroll=ensembleMessage.getVerticalScrollBar();
 		
 		listeCoPanel.setLayout(new BoxLayout(listeCoPanel, BoxLayout.PAGE_AXIS));
 		listeCoPanel.add(titreListeCoLabel);
-		listeCoPanel.add(user);
+		listeCoPanel.add(usr);
 
 		chatPanel.add(choixCommande);
 		chatPanel.add(champsTextChat);
@@ -91,6 +97,9 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		conteneur.add(chatPanel, BorderLayout.SOUTH);
 		
 		setContentPane(conteneur);
+		
+		client.handleMessageFromClientUI("#login "+login);
+
 		setVisible(true);
 
 	}
@@ -123,8 +132,20 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 
 	@Override
 	public void display(String message) {
-		String t=""+conversation.getText();
-		conversation.setText(t+"\n"+message);
+		String t;
+		if(message.contains("["+login+"]")){
+			t=""+conversation.getText();
+			conversation.setText(t+"\n>"+message.substring(login.length()+2));
+		}
+		else if(message.contains("[console]") || message.contains("[server]")){
+			t=""+conversation.getText();
+			conversation.setText(t+"\n"+message);
+		}
+		else {
+			t=""+conversation.getText();
+			conversation.setText(t+"\n"+message.substring(1, message.indexOf("]"))+" >"+message.substring(message.indexOf("]")+1));
+		}
+		scroll.setValue(scroll.getMaximum());
 	}
 	
 	public static void main(String[] args)
