@@ -41,14 +41,6 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	
 	public ServerUI(int port)
 		{
-			try 
-			{
-				server = new EchoServer(port, this);
-			} 
-			catch (Exception ex) 
-			{
-				System.out.println("ERROR - Could not listen for clients!");
-			}	
 		
 		setTitle("Chat");
 		setSize(600,600);
@@ -61,8 +53,10 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		usr = new JLabel(login);
 		
 		ValidMessageBouton.addActionListener(this);
+		ValidMessageBouton.setBackground(Color.GREEN);
 		
 		quitterBouton.addActionListener(this);
+		quitterBouton.setBackground(Color.RED);
 		
 		champsTextChat.addKeyListener(this);
 		
@@ -94,6 +88,15 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		conteneur.add(chatPanel, BorderLayout.SOUTH);
 		
 		setContentPane(conteneur);
+		
+		try 
+		{
+			server = new EchoServer(port, this);
+		} 
+		catch (Exception ex) 
+		{
+			System.out.println("ERROR - Could not listen for clients!");
+		}	
 
 		setVisible(true);
 
@@ -139,9 +142,9 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 			t=""+conversation.getText();
 			conversation.setText(t+"\n>"+message.substring(login.length()+2));
 		}
-		else if(message.contains("[console]") || message.contains("[server]")){
+		else if(message.contains("[console]")){
 			t=""+conversation.getText();
-			conversation.setText(t+"\n"+message);
+			conversation.setText(t+"\n"+(message.substring(1, message.indexOf("]"))).toUpperCase()+" >"+message.substring(message.indexOf("]")+1));
 		}
 		else {
 			t=""+conversation.getText();
@@ -153,8 +156,6 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	public static void main(String[] args)
 	{
 		ServerUI serverWindow = new ServerUI(DEFAULT_PORT);
-		//clientWindow.client.handleMessageFromClientUI("#login matthieu");
-		//ClientWindow loginWindow = new ClientWindow();
 	}
 
 	@Override

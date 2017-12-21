@@ -136,7 +136,7 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		}
 		else if(message.contains("[console]") || message.contains("[server]")){
 			t=""+conversation.getText();
-			conversation.setText(t+"\n"+message);
+			conversation.setText(t+"\n"+(message.substring(1, message.indexOf("]"))).toUpperCase()+" >"+message.substring(message.indexOf("]")+1));
 		}
 		else {
 			t=""+conversation.getText();
@@ -148,8 +148,6 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	public static void main(String[] args)
 	{
 		ClientUI clientWindow = new ClientUI("Anonymous","localhost", ""+DEFAULT_PORT);
-		//clientWindow.client.handleMessageFromClientUI("#login matthieu");
-		//ClientWindow loginWindow = new ClientWindow();
 	}
 
 	@Override

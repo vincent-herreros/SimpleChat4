@@ -6,6 +6,8 @@ import common.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.text.NumberFormat;
 
@@ -13,7 +15,7 @@ import client.*;
 import common.*;
 
 
-public class ClientWindow extends JFrame implements ActionListener{
+public class ClientWindow extends JFrame implements ActionListener, KeyListener{
 	
 	ClientUI master;
 	
@@ -43,6 +45,10 @@ public class ClientWindow extends JFrame implements ActionListener{
 		
 		texteLogin.setPreferredSize(new Dimension(200, 20));
 		texteHote.setPreferredSize(new Dimension(200, 20));
+		texteLogin.addKeyListener(this);
+		texteHote.addKeyListener(this);
+		textePort.addKeyListener(this);
+
 		
 		panelLogin.setLayout(new BoxLayout(panelLogin, BoxLayout.LINE_AXIS));
 		panelHote.setLayout(new BoxLayout(panelHote, BoxLayout.LINE_AXIS));
@@ -106,6 +112,34 @@ public class ClientWindow extends JFrame implements ActionListener{
 	public String getLogin() {
 		System.out.println(login);
 		return login;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+			master.client.handleMessageFromClientUI("#setport "+textePort.getText());
+			master.client.handleMessageFromClientUI("#sethost "+texteHote.getText());
+			master.login=texteLogin.getText();
+			master.usr.setText(master.login);
+			master.setVisible(true);
+			setVisible(false);
+			master.client.handleMessageFromClientUI("#login "+texteLogin.getText());
+			login = texteLogin.getText();
+			hote = texteHote.getText();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

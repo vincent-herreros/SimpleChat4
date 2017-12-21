@@ -6,6 +6,8 @@ import common.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.text.NumberFormat;
 
@@ -13,7 +15,7 @@ import client.*;
 import common.*;
 
 
-public class ServerWindow extends JFrame implements ActionListener{
+public class ServerWindow extends JFrame implements ActionListener, KeyListener{
 	
 	ServerUI master;
 	
@@ -48,6 +50,9 @@ public class ServerWindow extends JFrame implements ActionListener{
 				System.exit(0);
 			}
 		});
+		
+		textePort.addKeyListener(this);
+		
 		panelPort.add(labelPort);
 		panelPort.add(textePort);
 		
@@ -70,7 +75,27 @@ public class ServerWindow extends JFrame implements ActionListener{
 			master.setVisible(true);
 			setVisible(false);
 		}
-		this.setVisible(false);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+			master.server.handleMessageFromServerUI("#setport "+textePort.getText());
+			master.setVisible(true);
+			setVisible(false);
+		}		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
