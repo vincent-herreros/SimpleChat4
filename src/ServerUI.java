@@ -9,6 +9,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,11 +27,16 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 	
 	JLabel usr ;
 	
+	private ArrayList noms = new ArrayList();
+
+	
 	private JPanel conteneur = new JPanel();
 	private JPanel listeCoPanel = new JPanel();
 	private JPanel chatPanel = new JPanel();
 	private JLabel titreListeCoLabel = new JLabel("My Name :");
+	private JLabel listeCoLabel = new JLabel("Who's connected :");
 	private JTextPane conversation = new JTextPane();
+	private JTextPane co = new JTextPane();
 	private JScrollPane ensembleMessage ;
 	private JTextField champsTextChat = new JTextField();
 	private JButton ValidMessageBouton = new JButton("Send");
@@ -68,6 +74,8 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		listeCoPanel.setLayout(new BoxLayout(listeCoPanel, BoxLayout.PAGE_AXIS));
 		listeCoPanel.add(titreListeCoLabel);
 		listeCoPanel.add(usr);
+		listeCoPanel.add(listeCoLabel);
+		listeCoPanel.add(co);
 
 		chatPanel.add(choixCommande);
 		chatPanel.add(champsTextChat);
@@ -99,6 +107,7 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		}	
 
 		setVisible(true);
+	
 
 	}
 
@@ -143,8 +152,26 @@ public class ServerUI extends JFrame implements ChatIF, ActionListener, KeyListe
 			conversation.setText(t+"\n>"+message.substring(login.length()+2));
 		}
 		else if(message.contains("[console]")){
+			Pattern pattern = Pattern.compile("is connected");
+	        Matcher matcher = pattern.matcher(message);
+	        Pattern pattern2 = Pattern.compile("is disconnected");
+	        Matcher matcher2 = pattern2.matcher(message);
 			t=""+conversation.getText();
 			conversation.setText(t+"\n"+(message.substring(1, message.indexOf("]"))).toUpperCase()+" >"+message.substring(message.indexOf("]")+1));
+			if(matcher.find()) {
+				String[] parts = message.split(" ");
+				noms.add(parts[1]);
+				for(int i=0;i<noms.size();i++) {
+					String v=co.getText();
+					co.setText(v+"\n-"+noms.get(i));
+				}
+			}
+			if(matcher2.find()) {
+				String[] parts = message.split(" ");
+				while(noms.contains(parts[1])) {
+					noms.remove(parts[1]);
+				}
+			}
 		}
 		else {
 			t=""+conversation.getText();
