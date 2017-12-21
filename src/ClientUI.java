@@ -168,9 +168,4 @@ public class ClientUI extends JFrame implements ChatIF, ActionListener, KeyListe
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void addNotify() {
-        super.addNotify();
-        requestFocus();
-    }
 }
